@@ -5,8 +5,7 @@
 ```rust
 
 use std::{
-    fs::read,
-    path::{PathBuf, Path}};
+    fs::read,  path::{Path, PathBuf}};
 use image::ImageFormat;
 use mime_guess::from_path;
 use tao::{
@@ -20,7 +19,7 @@ use tao::{
         PixelUnit, 
         Position, 
         Size
-    }, event::{self, Event, WindowEvent}, event_loop::{ControlFlow, EventLoop, EventLoopBuilder}, monitor::VideoMode, window::{
+    }, event::{Event, WindowEvent}, event_loop::{ControlFlow, EventLoop, EventLoopBuilder}, monitor::{MonitorHandle, VideoMode}, window::{
         Fullscreen, Icon, Theme, WindowBuilder, WindowId, WindowSizeConstraints
     }
 };
@@ -79,6 +78,34 @@ fn get_nexium_response_protocol(
         .map_err(Into::into)
 }
 
+
+
+
+// Enumerate monitors and prompt user to choose one
+pub fn prompt_for_monitor(event_loop: &EventLoop<UserEvent>, num:usize) ->  MonitorHandle {
+    let monitor = event_loop
+      .available_monitors()
+      .nth(num)
+      .expect("Please enter a valid ID");
+  
+    println!("Using {:?}", monitor.name());
+  
+    monitor
+  }
+  
+pub fn prompt_for_video_mode(monitor: &MonitorHandle,num:usize) -> VideoMode {
+    let video_mode = monitor
+      .video_modes()
+      .nth(num)
+      .expect("Please enter a valid ID");
+  
+    println!("Using {}", video_mode);
+  
+    video_mode
+  }
+
+
+  
 struct Nexium{
     event_loop:EventLoop<UserEvent>,
     webview:wry::WebViewBuilder<'static>,
@@ -446,18 +473,34 @@ impl Nexium {
 
 
     #[allow(dead_code)]
-    pub fn use_fullscreen(self,fullscreen_type:&str, video_mode:VideoMode){
+    pub fn use_fullscreen(self, fullscreen_type: &str) {
+        let monitors: Vec<_> = self.event_loop.available_monitors().collect();
+        
+        if monitors.is_empty() {
+            println!("No monitors available.");
+            return;
+        }
+    
+        let num = monitors.len();
+    
         let fullscreen = match fullscreen_type {
-            "exclusive" => Fullscreen::Exclusive(video_mode),
-            "borderless" => Fullscreen::Borderless(None),
-           
+            "exclusive" => {
+                let monitor = prompt_for_monitor(&self.event_loop, num);
+                let video_mode = prompt_for_video_mode(&monitor, num);
+                Some(Fullscreen::Exclusive(video_mode))
+            }
+            "borderless" => {
+                let monitor = prompt_for_monitor(&self.event_loop, num);
+                Some(Fullscreen::Borderless(Some(monitor)))
+            }
+            "default" => Some(Fullscreen::Borderless(None)),
             _ => {
                 println!("Invalid fullscreen type provided. Use 'exclusive' or 'borderless'.");
                 return;
-            }
+            },
         };
-        self.window.with_fullscreen(Some(fullscreen));
     
+        self.window.with_fullscreen(fullscreen);
     }
 
 
