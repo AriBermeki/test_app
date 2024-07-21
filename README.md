@@ -1,3 +1,5 @@
+```rust
+
 use std::{
     fs::read,  path::{Path, PathBuf}, sync::{Arc, Mutex}};
 use image::ImageFormat;
@@ -726,3 +728,8 @@ fn main() {
     let app = Nexium::new();
     app.run();
 }
+
+
+
+
+```
