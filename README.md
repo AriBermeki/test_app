@@ -1,11 +1,5 @@
-# test_app
-
-
-
-```rust
-
 use std::{
-    fs::read,  path::{Path, PathBuf}};
+    fs::read,  path::{Path, PathBuf}, sync::{Arc, Mutex}};
 use image::ImageFormat;
 use mime_guess::from_path;
 use tao::{
@@ -20,7 +14,7 @@ use tao::{
         Position, 
         Size
     }, event::{Event, WindowEvent}, event_loop::{ControlFlow, EventLoop, EventLoopBuilder}, monitor::{MonitorHandle, VideoMode}, window::{
-        Fullscreen, Icon, Theme, WindowBuilder, WindowId, WindowSizeConstraints
+        self, Fullscreen, Icon, Theme, WindowBuilder, WindowId, WindowSizeConstraints
     }
 };
 use wry::{
@@ -109,13 +103,16 @@ pub fn prompt_for_video_mode(monitor: &MonitorHandle,num:usize) -> VideoMode {
 struct Nexium{
     event_loop:EventLoop<UserEvent>,
     webview:wry::WebViewBuilder<'static>,
-    window:tao::window::WindowBuilder,
+    window: tao::window::WindowBuilder,
     
 }
 
 impl Nexium {
-    #[allow(dead_code)]
-    pub fn new(self){}
+
+
+    pub fn new(self)->Nexium{
+        Nexium{}
+    }
 
     // WebViewBuilder Methods
     #[allow(dead_code)]
@@ -691,40 +688,31 @@ impl Nexium {
 
     #[allow(dead_code)]
     pub fn run(mut self, _func: String) {
+
+
+
         self.event_loop = EventLoopBuilder::<UserEvent>::with_user_event().build();
         let _proxy = self.event_loop.create_proxy();
-        let window = self.window.build(&self.event_loop).unwrap();
-        let builder = WebViewBuilder::new(&window);
+        let window_builder = WindowBuilder::new();
+        self.window = window_builder;
+        let main_window = self.window.build(&self.event_loop).unwrap();
+        let builder = WebViewBuilder::new(&main_window);
         self.webview = builder;
         let _ = self.webview.build().unwrap();
 
-    
+
+
+
+
         self.event_loop.run(move |event, _, control_flow| {
             *control_flow = ControlFlow::Wait;
-    
-            match event {
-                Event::WindowEvent { event, .. } => match event {
-                    WindowEvent::CloseRequested => {
-                        *control_flow = ControlFlow::Exit;
-                    }
-                    _ => (),
-                },
-                Event::UserEvent(user_event) => match user_event {
-                    UserEvent::CloseWindow(window_id) => {
-                        if window_id == window.id() {
-                            *control_flow = ControlFlow::Exit;
-                        }
-                    }
-                    UserEvent::NewTitle(window_id, title) => {
-                        if window_id == window.id() {
-                            window.set_title(&title);
-                        }
-                    }
-                    UserEvent::NewWindow => {
-                        // Handle new window creation here if needed
-                    }
-                },
-                _ => (),
+
+            if let Event::WindowEvent {
+                event: WindowEvent::CloseRequested,
+                ..
+            } = event
+            {
+                *control_flow = ControlFlow::Exit
             }
         });
     }
@@ -735,7 +723,6 @@ impl Nexium {
 
 
 fn main() {
-    println!("Hello, world!");
+    let app = Nexium::new();
+    app.run();
 }
-
-```
