@@ -693,47 +693,42 @@ impl Nexium {
     pub fn run(mut self, _func: String) {
         self.event_loop = EventLoopBuilder::<UserEvent>::with_user_event().build();
         let _proxy = self.event_loop.create_proxy();
-        self.window = WindowBuilder::new().build(&self.event_loop).unwrap();
+        let window = self.window.build(&self.event_loop).unwrap();
+        let builder = WebViewBuilder::new(&window);
+        self.webview = builder;
+        let _ = self.webview.build().unwrap();
 
-        #[cfg(any(
-          target_os = "windows",
-          target_os = "macos",
-          target_os = "ios",
-          target_os = "android"
-        ))]
-        {
-            self.webview = WebViewBuilder::new(&self.window)
-                .build()
-                .unwrap();
-        }
-
-        #[cfg(not(any(
-          target_os = "windows",
-          target_os = "macos",
-          target_os = "ios",
-          target_os = "android"
-        )))]
-        {
-            use tao::platform::unix::WindowExtUnix;
-            use wry::application::platform::unix::WebViewBuilderExtUnix;
-            let vbox = self.window.default_vbox().unwrap();
-            self.webview = WebViewBuilder::new_gtk(vbox)
-                .build()
-                .unwrap();
-        }
-
+    
         self.event_loop.run(move |event, _, control_flow| {
             *control_flow = ControlFlow::Wait;
-
-            if let Event::WindowEvent {
-                event: WindowEvent::CloseRequested,
-                ..
-            } = event
-            {
-                *control_flow = ControlFlow::Exit;
+    
+            match event {
+                Event::WindowEvent { event, .. } => match event {
+                    WindowEvent::CloseRequested => {
+                        *control_flow = ControlFlow::Exit;
+                    }
+                    _ => (),
+                },
+                Event::UserEvent(user_event) => match user_event {
+                    UserEvent::CloseWindow(window_id) => {
+                        if window_id == window.id() {
+                            *control_flow = ControlFlow::Exit;
+                        }
+                    }
+                    UserEvent::NewTitle(window_id, title) => {
+                        if window_id == window.id() {
+                            window.set_title(&title);
+                        }
+                    }
+                    UserEvent::NewWindow => {
+                        // Handle new window creation here if needed
+                    }
+                },
+                _ => (),
             }
         });
     }
+    
 }
 
 
