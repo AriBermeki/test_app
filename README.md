@@ -733,3 +733,243 @@ fn main() {
 
 
 ```
+#Python
+
+
+```python
+
+
+from typing import Callable
+
+
+class PyNexium:
+
+    def __init__(self) -> None:
+        pass
+
+    def set_app_config(self):
+        pass
+
+
+    def with_always_on_bottom(self):
+        pass
+
+    def with_always_on_top(self):
+        pass
+
+    def with_closable(self):
+        pass
+
+    def with_content_protection(self):
+        pass
+
+    def with_decorations(self):
+        pass
+
+    def with_focused(self):
+        pass
+
+    def with_fullscreen(self):
+        pass
+
+    def with_inner_size(self):
+        pass
+
+    def with_inner_size_constraints(self):
+        pass
+
+    def with_max_inner_size(self):
+        pass
+
+    def with_maximizable(self):
+        pass
+
+    def with_maximized(self):
+        pass
+
+    def with_min_inner_size(self):
+        pass
+
+    def with_minimizable(self):
+        pass
+
+    def with_position(self):
+        pass
+
+    def with_resizable(self):
+        pass
+
+    def with_theme(self):
+        pass
+
+    def with_title(self):
+        pass
+
+    def with_transparent(self):
+        pass
+
+    def with_visible(self):
+        pass
+
+    def with_visible_on_all_workspaces(self):
+        pass
+
+    def with_window_icon(self):
+        pass
+
+    def with_accept_first_mouse(self):
+        pass
+
+    def with_asynchronous_custom_protocol(self):
+        pass
+
+    def with_autoplay(self):
+        pass
+
+    def with_back_forward_navigation_gestures(self):
+        pass
+
+    def with_background_color(self):
+        pass
+
+    def with_bounds(self):
+        pass
+
+    def with_clipboard(self):
+        pass
+
+    def with_custom_protocol(self):
+        pass
+
+    def with_devtools(self):
+        pass
+
+    def with_document_title_changed_handler(self):
+        pass
+
+    def with_download_completed_handler(self):
+        pass
+
+    def with_download_started_handler(self):
+        pass
+
+    def with_drag_drop_handler(self):
+        pass
+
+    def with_focused(self):
+        pass
+
+    def with_headers(self):
+        pass
+
+    def with_hotkeys_zoom(self):
+        pass
+
+    def with_html(self):
+        pass
+
+    def with_incognito(self):
+        pass
+
+    def with_initialization_script(self):
+        pass
+
+    def with_ipc_handler(self):
+        pass
+
+    def with_navigation_handler(self):
+        pass
+
+    def with_new_window_req_handler(self):
+        pass
+
+    def with_on_page_load_handler(self):
+        pass
+
+    def with_proxy_config(self):
+        pass
+
+    def with_transparent(self):
+        pass
+
+    def with_url(self):
+        pass
+
+    def with_url_and_headers(self):
+        pass
+
+    def with_user_agent(self):
+        pass
+
+    def with_visible(self):
+        pass
+
+    def with_web_context(self):
+        pass
+
+    def pynexium_command(self):
+        pass
+
+    def pynexium_jscommand(self):
+        pass
+
+    def pynexium_realtime_command(self):
+        pass
+
+    def pynexium__realtime_jscommand(self):
+        pass
+
+    def on_applications_startup_event(self, func:Callable): 
+        pass
+    def on_applications_shutdown_event(self, func:Callable):
+        pass
+
+    def run(self):
+        pass
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Example Usage
+
+
+app = PyNexium()
+app.set_app_config() # some App Config
+
+
+@app.pynexium_command
+def some_backend_command(): # some command that can be invoked from frontend
+    pass
+
+@app.pynexium_command
+def some_backend_command(): 
+    app.pynexium_jscommand() #  # call some javascript function that can be invoked from backendend
+
+
+
+
+
+def startup_event():
+    print('Applications started')
+
+def shutdown_event():
+    print('Applications stopped')
+
+
+
+app.on_applications_startup_event(func=startup_event)
+app.on_applications_shutdown_event(func=shutdown_event)
+if __name__ == "__main__":
+    app.run()
+
+```
