@@ -951,6 +951,19 @@ app.set_app_config() # some App Config
 def some_backend_command(): # some command that can be invoked from frontend
     pass
 
+
+
+
+@app.pynexium_realtime_command
+def some_backend_command(): # some command that can be invoked from frontend
+    while True:
+        print("")
+
+
+
+
+
+
 @app.pynexium_command
 def some_backend_command(): 
     app.pynexium_jscommand() #  # call some javascript function that can be invoked from backendend
