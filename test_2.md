@@ -44,7 +44,7 @@ struct NexiumWebView{
 
 
 impl NexiumWebView {
-    pub fn new()->NexiumWebView{
+    pub fn new()->Self{
         Self{
             webview_attrs:Default::default(),
          
@@ -83,9 +83,7 @@ impl NexiumWebView {
     pub fn with_web_context(&mut self){}
 
 
-    pub fn get_attributes(&self) -> &WebViewAttributes {
-        &self.webview_attrs
-    }
+
 
 
 
@@ -190,8 +188,8 @@ impl Nexium {
             let vbox = window.default_vbox().unwrap();
             WebViewBuilder::new_gtk(vbox)
           };
-        let attributes = webview_attrabiute.get_attributes();
-        webview_builder.attrs = attributes;
+        let  attributes = webview_attrabiute.webview_attrs;
+        webview_builder.attrs =  attributes;
         let main_webview = webview_builder.build().unwrap();
 
         Self{
