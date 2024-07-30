@@ -18,201 +18,157 @@ use wry::{
 
 use image::ImageFormat;
 use tao::{
-/*     dpi::{
-        LogicalPosition, 
-        LogicalSize, 
-        LogicalUnit, 
-        PhysicalPosition, 
-        PhysicalSize, 
-        PhysicalUnit, 
-        PixelUnit, 
-        Position, 
-        Size
-    },  */
     event::{Event, WindowEvent}, 
     event_loop::{ControlFlow, EventLoop, EventLoopBuilder, EventLoopProxy}, 
     window::{
         Fullscreen, Icon, Theme, Window, WindowAttributes, WindowBuilder, WindowSizeConstraints,
     },
-    
 };
 
 use tao::window::WindowId;
 
 
 
-#[allow(dead_code)]
-
-pub(crate) enum UserEvent {
+pub(crate) enum NexiumEventAPI {
     CloseWindow(WindowId),
     NewTitle(WindowId, String),
     NewWindow,
   }
 
-  pub struct Nexium {
-    event_loop: EventLoop<UserEvent>,
-    proxy:Option<EventLoopProxy<UserEvent>>,
-    webview_core: WebViewAttributes,
-    window_core: WindowAttributes,
-    webview:Option<WebView>,
-    window:Option<Window>,
-    web_context:Option<WebContext>,
-    config:HashMap<String,Value>
+
+
+struct NexiumWebView{
+    webview_attrs:WebViewAttributes,
     
 }
 
-impl Nexium {
-    pub fn new() -> Self {
-        Self {
-            event_loop: EventLoopBuilder::with_user_event().build(),
-            proxy:None,
-            webview_core: Default::default(),
-            window_core: Default::default(),
-            webview:None,
-            window:None,
-            web_context:Default::default(),
-            config:HashMap::new()
+
+impl NexiumWebView {
+    pub fn new()->NexiumWebView{
+        Self{
+            webview_attrs:Default::default(),
+         
         }
     }
 
+    pub fn with_accept_first_mouse(&mut self){}
+    pub fn with_asynchronous_custom_protocol(&mut self){}
+    pub fn with_autoplay(&mut self){}
+    pub fn with_back_forward_navigation_gestures(&mut self){}
+    pub fn with_background_color(&mut self){}
+    pub fn with_bounds(&mut self){}
+    pub fn with_clipboard(&mut self){}
+    pub fn with_custom_protocol(&mut self){}
+    pub fn with_devtools(&mut self){}
+    pub fn with_document_title_changed_handler(&mut self){}
+    pub fn with_download_completed_handler(&mut self){}
+    pub fn with_download_started_handler(&mut self){}
+    pub fn with_drag_drop_handler(&mut self){}
+    pub fn with_focused(&mut self){}
+    pub fn with_headers(&mut self){}
+    pub fn with_hotkeys_zoom(&mut self){}
+    pub fn with_html(&mut self){}
+    pub fn with_incognito(&mut self){}
+    pub fn with_initialization_script(&mut self){}
+    pub fn with_ipc_handler(&mut self){}
+    pub fn with_navigation_handler(&mut self){}
+    pub fn with_new_window_req_handler(&mut self){}
+    pub fn with_on_page_load_handler(&mut self){}
+    pub fn with_proxy_config(&mut self){}
+    pub fn with_transparent(&mut self){}
+    pub fn with_url(&mut self){}
+    pub fn with_url_and_headers(&mut self){}
+    pub fn with_user_agent(&mut self){}
+    pub fn with_visible(&mut self){}
+    pub fn with_web_context(&mut self){}
 
-    #[allow(dead_code)]
-    pub fn webview_builder_use_url(&mut self,  url: String){
-        self.webview_core.url = Some(url.into());
-        self.webview_core.headers = None;
-        self.webview_core.devtools = true;
-      
-    
+
+    pub fn get_attributes(&self) -> &WebViewAttributes {
+        &self.webview_attrs
     }
 
 
-    #[allow(dead_code)]
-    pub fn webview_is_devtools_open(&mut self){
-        if let Some(view) = self.webview.take(){
-            let devtools_state= view.is_devtools_open();
-            println!("devtools_state: {}", devtools_state)
-        }
-      
-    
-    }
-    #[allow(dead_code)]
-    pub fn webcontext_data_directory(&mut self){
-        if let Some(context) = self.web_context.take(){
-            let data_directory= context.data_directory();
-            println!("data_directory: {:?}", data_directory)
-        }
-      
-    
-    }
-    #[allow(dead_code)]
-    pub fn webview_evaluate_script(&mut self,  js: &str){
-        if let Some(view) = self.webview.take(){
-            let script_state= view.evaluate_script(js);
-            println!("webview_evaluate_script_state: {:?}", script_state)
-        }
-      
-    
-    }
+
+}
 
 
 
 
 
-    #[allow(dead_code)]
-    pub(crate) fn send_proxy_event(&mut self, event:UserEvent){
-        if let Some(proxy) = self.proxy.take(){
-            let _ = proxy.send_event(event);
-            
-        }
-      
-    
-    }
 
 
+
+
+
+
+struct NexiumWindow{
+    window_attrs:WindowAttributes,
    
+}
 
-    pub fn run(
-        mut self, 
-        
-    ) {
 
-        let  proxy = self.event_loop.create_proxy();
+impl NexiumWindow {
+    pub fn new()->NexiumWindow{
+        Self{
+            window_attrs:Default::default(),
+       
+        }
+    }
 
-        self.proxy = Some(proxy);
+
+    
+    pub fn with_always_on_bottom(&mut self){}
+    pub fn with_always_on_top(&mut self){}
+    pub fn with_closable(&mut self){}
+    pub fn with_content_protection(&mut self){}
+    pub fn with_decorations(&mut self){}
+    pub fn with_focused(&mut self){}
+    pub fn with_fullscreen(&mut self){}
+    pub fn with_inner_size(&mut self){}
+    pub fn with_inner_size_constraints(&mut self){}
+    pub fn with_max_inner_size(&mut self){}
+    pub fn with_maximizable(&mut self){}
+    pub fn with_maximized(&mut self){}
+    pub fn with_min_inner_size(&mut self){}
+    pub fn with_minimizable(&mut self){}
+    pub fn with_position(&mut self){}
+    pub fn with_resizable(&mut self){}
+    pub fn with_theme(&mut self){}
+    pub fn with_title(&mut self){}
+    pub fn with_transparent(&mut self){}
+    pub fn with_visible(&mut self){}
+    pub fn with_visible_on_all_workspaces(&mut self){}
+    pub fn with_window_icon(&mut self){}
+
+    pub fn get_attributes(&self) -> &WindowAttributes {
+        &self.window_attrs
+    }
+
+
+}
+
+
+
+
+
+
+struct Nexium{
+    event_loop: EventLoop<NexiumEventAPI>,
+    window:Window,
+    webview:WebView,
+   
+}
+
+
+impl Nexium {
+    pub fn new(window_attrabiute:NexiumWindow, webview_attrabiute:NexiumWebView)->Nexium{
+        let event_loop = EventLoopBuilder::<NexiumEventAPI>::with_user_event().build();
 
         let mut window_builder = WindowBuilder::new();
 
-        window_builder.window = self.window_core;
+        window_builder.window = window_attrabiute.get_attributes().clone();
 
-        let main_window = window_builder.build(&self.event_loop).unwrap();
-        /*         
-
-        main_window.available_monitors();
-        main_window.current_monitor()
-        main_window.cursor_position()
-        main_window.drag_resize_window(direction)
-        main_window.drag_window()
-        main_window.fullscreen()
-        main_window.id()
-        main_window.inner_position()
-        main_window.inner_size()
-        main_window.is_closable()
-        main_window.is_decorated()
-        main_window.is_focused()
-        main_window.is_maximizable()
-        main_window.is_maximized()
-        main_window.is_minimizable()
-        main_window.is_minimized()
-        main_window.is_resizable()
-        main_window.is_visible()
-        main_window.monitor_from_point(x, y)
-        main_window.outer_position()
-        main_window.outer_size()
-        main_window.primary_monitor()
-        main_window.request_redraw()
-        main_window.request_user_attention(request_type)
-        main_window.scale_factor()
-        main_window.set_always_on_bottom(always_on_bottom)
-        main_window.set_always_on_top(always_on_top)
-        main_window.set_closable(closable)
-        main_window.set_content_protection(enabled)
-        main_window.set_cursor_grab(grab)
-        main_window.set_cursor_icon(cursor)
-        main_window.set_cursor_position(position)
-        main_window.set_cursor_visible(visible)
-        main_window.set_decorations(decorations)
-        main_window.set_focus()
-        main_window.set_fullscreen(fullscreen)
-        main_window.set_ignore_cursor_events(ignore)
-        main_window.set_ime_position(position)
-        main_window.set_inner_size(size)
-        main_window.set_inner_size_constraints(constraints)
-        main_window.set_max_inner_size(max_size)
-        main_window.set_maximizable(maximizable)
-        main_window.set_min_inner_size(min_size)
-        main_window.set_minimizable(minimizable)
-        main_window.set_minimized(minimized)
-        main_window.set_outer_position(position)
-        main_window.set_progress_bar(progress)
-        main_window.set_resizable(resizable)
-        main_window.set_title(title)
-        main_window.set_visible(visible)
-        main_window.set_visible_on_all_workspaces(visible)
-        main_window.set_window_icon(window_icon)
-        main_window.set_enable(enabled)
-        main_window.set_rtl(rtl)
-        main_window.set_skip_taskbar(skip)
-        main_window.set_taskbar_icon(taskbar_icon)
-        main_window.set_undecorated_shadow(shadow)
-        main_window.theme()
-        main_window.title()
-        main_window.window_handle()
-        main_window.begin_resize_drag(edge, button, x, y)
-        main_window.reset_dead_keys()
-
-        */
-
-
+        let main_window = window_builder.build(&event_loop).unwrap();
 
         #[cfg(any(
             target_os = "windows",
@@ -221,8 +177,6 @@ impl Nexium {
             target_os = "android"
           ))]
           let mut webview_builder = WebViewBuilder::new(&main_window);
-        
-            
         
           #[cfg(not(any(
             target_os = "windows",
@@ -236,81 +190,127 @@ impl Nexium {
             let vbox = window.default_vbox().unwrap();
             WebViewBuilder::new_gtk(vbox)
           };
+        let attributes = webview_attrabiute.get_attributes();
+        webview_builder.attrs = attributes;
+        let main_webview = webview_builder.build().unwrap();
 
-        webview_builder.attrs = self.webview_core;
-        let mywebview = webview_builder.build().unwrap();
- 
-        /*         
-        mywebview.bounds();
-        mywebview.clear_all_browsing_data();
-        mywebview.close_devtools();
-        mywebview.controller();
-        mywebview.evaluate_script(js);
-        mywebview.evaluate_script_with_callback(js, callback);
-        mywebview.focus();
-        mywebview.is_devtools_open();
-        mywebview.load_url(url);
-        mywebview.load_url_with_headers(url, headers);
-        mywebview.open_devtools();
-        mywebview.print();
-        mywebview.reparent(hwnd);
-        mywebview.set_background_color(background_color);
-        mywebview.set_bounds(bounds);
-        mywebview.set_memory_usage_level(level);
-        mywebview.set_theme(theme);
-        mywebview.set_visible(visible);
-        mywebview.url();
-        mywebview.zoom(scale_factor); 
-        */
-        
-
-        self.webview = Some(mywebview);
-        self.window = Some(main_window);
-
-
-        
-        main_window_loop(self.event_loop);
-    }
-}
-
-
-
-
-
-pub(self) fn main_window_loop(
-    event_loop: EventLoop<UserEvent>,  
-    
-) {
-
-    event_loop.run(move |event, _, control_flow| {
-        *control_flow = ControlFlow::Wait;
-
-        match event {
-            Event::WindowEvent {
-                event: WindowEvent::CloseRequested,
-                ..
-            } => {
-    
-                *control_flow = ControlFlow::Exit;
-            },
-            _ => (),
+        Self{
+            event_loop:event_loop,
+            window:main_window,
+            webview:main_webview
+       
         }
-    });
+    }
+
+
+    /// Window Struct Methods
+    pub fn available_monitors(&mut self){}
+    pub fn current_monitor(&mut self){}
+    pub fn cursor_position(&mut self){}
+    pub fn drag_resize_window(&mut self){}
+    pub fn drag_window(&mut self){}
+    pub fn fullscreen(&mut self){}
+    pub fn id(&mut self){}
+    pub fn inner_position(&mut self){}
+    pub fn inner_size(&mut self){}
+    pub fn is_closable(&mut self){}
+    pub fn is_decorated(&mut self){}
+    pub fn is_focused(&mut self){}
+    pub fn is_maximizable(&mut self){}
+    pub fn is_maximized(&mut self){}
+    pub fn is_minimizable(&mut self){}
+    pub fn is_minimized(&mut self){}
+    pub fn is_resizable(&mut self){}
+    pub fn is_visible(&mut self){}
+    pub fn monitor_from_point(&mut self){}
+    pub fn outer_position(&mut self){}
+    pub fn outer_size(&mut self){}
+    pub fn primary_monitor(&mut self){}
+    pub fn request_redraw(&mut self){}
+    pub fn request_user_attention(&mut self){}
+    pub fn scale_factor(&mut self){}
+    pub fn set_always_on_bottom(&mut self){}
+    pub fn set_always_on_top(&mut self){}
+    pub fn set_closable(&mut self){}
+    pub fn set_content_protection(&mut self){}
+    pub fn set_cursor_grab(&mut self){}
+    pub fn set_cursor_icon(&mut self){}
+    pub fn set_cursor_position(&mut self){}
+    pub fn set_cursor_visible(&mut self){}
+    pub fn set_decorations(&mut self){}
+    pub fn set_focus(&mut self){}
+    pub fn set_fullscreen(&mut self){}
+    pub fn set_ignore_cursor_events(&mut self){}
+    pub fn set_ime_position(&mut self){}
+    pub fn set_inner_size(&mut self){}
+    pub fn set_inner_size_constraints(&mut self){}
+    pub fn set_max_inner_size(&mut self){}
+    pub fn set_maximizable(&mut self){}
+    pub fn set_maximized(&mut self){}
+    pub fn set_min_inner_size(&mut self){}
+    pub fn set_minimizable(&mut self){}
+    pub fn set_minimized(&mut self){}
+    pub fn set_outer_position(&mut self){}
+    pub fn set_progress_bar(&mut self){}
+    pub fn set_resizable(&mut self){}
+    pub fn set_title(&mut self){}
+    pub fn set_window_visible(&mut self){}
+    pub fn set_visible_on_all_workspaces(&mut self){}
+    pub fn set_window_icon(&mut self){}
+    pub fn theme(&mut self){}
+    pub fn title(&mut self){}
+
+
+    /// WebView Struct Methods
+    pub fn bounds(&mut self){}
+    pub fn clear_all_browsing_data(&mut self){}
+    pub fn close_devtools(&mut self){}
+    pub fn controller(&mut self){}
+    pub fn evaluate_script(&mut self){}
+    pub fn evaluate_script_with_callback(&mut self){}
+    pub fn focus(&mut self){}
+    pub fn is_devtools_open(&mut self){}
+    pub fn load_url(&mut self){}
+    pub fn load_url_with_headers(&mut self){}
+    pub fn open_devtools(&mut self){}
+    pub fn print(&mut self){}
+    pub fn reparent(&mut self){}
+    pub fn set_background_color(&mut self){}
+    pub fn set_bounds(&mut self){}
+    pub fn set_memory_usage_level(&mut self){}
+    pub fn set_theme(&mut self){}
+    pub fn set_webView_visible(&mut self){}
+    pub fn url(&mut self){}
+    pub fn zoom(&mut self){}
+
+    pub fn run(self){
+        self.event_loop.run(move |event, _, control_flow| {
+            *control_flow = ControlFlow::Wait;
+    
+            match event {
+                Event::WindowEvent {
+                    event: WindowEvent::CloseRequested,
+                    ..
+                } => {
+        
+                    *control_flow = ControlFlow::Exit;
+                },
+                _ => (),
+            }
+        });
+    }
+
+
+
 }
 
 
 
 
 
-fn main() {
-    let mut app = Nexium::new();
-    app.webview_builder_use_url("https://webkit.org/".to_string());
-    app.webview_evaluate_script("console.log('Hallo')");
-    app.run();
+
+fn main(){
+
 }
-
-
-
-
 
 ```
