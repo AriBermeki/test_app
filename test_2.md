@@ -302,7 +302,7 @@ pub(self) fn main_window_loop(
 
 
 
-fn main(){
+fn main() {
     let mut app = Nexium::new();
     app.webview_builder_use_url("https://webkit.org/".to_string());
     app.webview_evaluate_script("console.log('Hallo')");
